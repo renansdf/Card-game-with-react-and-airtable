@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import api from '../../services/api';
 import { Container, DecksContainer, Deck, Questions, UsedCards } from './styles';
 import cardImg from '../../images/carta-bg.png';
+
+interface IParsedLine {
+  data: string[];
+}
+
+interface InterfaceProps {
+  parsedCSV?: IParsedLine[];
+}
 
 interface IDeckData {
   name: string;
@@ -19,55 +26,34 @@ interface IRecordObject {
   }
 }
 
-interface IAirTableResponseData {
-  data: {
-    records: Array<IRecordObject>;
-  }
+interface IParsedLine {
+  data: string[];
 }
 
-const Board: React.FC = () => {
+const Interface: React.FC<InterfaceProps> = ({ parsedCSV }) => {
   const [decks, setDecks] = useState<IDeckData[]>([]);
   const [card, setCard] = useState<ICard>({ question: '', valuation: 'regular' });
   const [usedCards, setUsedCards] = useState<ICard[]>([]);
 
-  const getDecks = useCallback(async () => {
-    const response: IAirTableResponseData = await api.get('', {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_TOKEN}`,
-      }
-    });
+  const getDecks = useCallback((parsedLines: IParsedLine[]) => {
+    if (parsedLines) {
+      const updatedDecks: IDeckData[] = [];
 
-    const records = response.data.records;
-    const foundDecks: IDeckData[] = [];
-    const keys: Array<string> = [];
+      const columnNames = parsedLines.shift();
 
-    records.forEach(record => {
-      let recordKeys = Object.keys(record.fields);
-      recordKeys.forEach(recordKey => {
-        if (keys.indexOf(recordKey) === -1) {
-          keys.push(recordKey);
-        }
+      columnNames?.data.forEach(column => {
+        updatedDecks.push({ name: column, cards: [] });
       });
-    });
 
-    keys.forEach(key => {
-      foundDecks.push({ name: key, cards: [] });
-    });
-
-    records.forEach(record => {
-      let keys = Object.keys(record.fields);
-      keys.forEach(key => {
-        foundDecks.forEach(deck => {
-          if (deck.name === key) {
-            deck.cards.push(record.fields[key]);
-          }
+      parsedLines.forEach((line, lineIndex) => {
+        line.data.forEach((data, dataIndex) => {
+          data && updatedDecks[dataIndex].cards.push(data);
         });
       });
-    });
 
-    setDecks(foundDecks);
-
-  }, [setDecks]);
+      setDecks(updatedDecks);
+    }
+  }, []);
 
   const handleCardChoice = useCallback((deckName) => {
     if (card && card.question === '') {
@@ -108,8 +94,8 @@ const Board: React.FC = () => {
   }, [setCard, setUsedCards, card, usedCards]);
 
   useEffect(() => {
-    getDecks();
-  }, [getDecks]);
+    parsedCSV && getDecks(parsedCSV);
+  }, [parsedCSV, getDecks]);
 
   return (
     <Container>
@@ -148,4 +134,4 @@ const Board: React.FC = () => {
   );
 }
 
-export default Board;
+export default Interface;
