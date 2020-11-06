@@ -8,6 +8,10 @@ export default createGlobalStyle`
     outline: 0;
   }
 
+  html{
+    background: #3405A2;
+  }
+
   body{
     background: #fff;
     color: #fff;
@@ -15,8 +19,7 @@ export default createGlobalStyle`
   }
 
   body, input, button{
-    font-family: 'Merienda One', cursive;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
   }
 
