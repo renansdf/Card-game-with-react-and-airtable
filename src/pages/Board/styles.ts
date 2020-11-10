@@ -1,10 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import trianguloCapa from '../../images/capa-bg.svg';
 import trianguloMetade from '../../images/meio-triangulo-direita.svg';
-
-interface ICSVContainerProps {
-  isVisible: boolean;
-}
 
 export const Container = styled.div`
   display: flex;
@@ -21,52 +17,37 @@ export const Container = styled.div`
   color: #3405A2;
 `;
 
-export const CSVContainer = styled.div<ICSVContainerProps>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: #3405A2;
+export const SocialIcons = styled.div`
+  position: absolute;
+  top: calc(50% + 40px);
+  left: 0px;
+  right: auto;
+  bottom: auto;
 
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  width: 60px;
 
-  section{
-    width: 400px;
-    position: relative;
+  a{
+    width: 50px;
+    height: 50px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    background: #a218b5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  h1{
-    color: #fff;
-    font-weight: 300;
-    font-size: 40px;
-  }
-
-  p{
-    color: #fff;
-  }
-
-  label{
-    color: #3405A2;
-    background: #fff;
-    position: absolute;
-    left: 20px;
-    bottom: 35px;
-    padding: 2px 15px;
-    border-radius: 30px;
-  }
-
-  p + p{
+  a + a{
     margin-top: 10px;
   }
 
-  div{
-    margin-top: 30px;
+  img{
+    width: 60%;
   }
 
-  ${props => props.isVisible && css`
-    display: none;
-  `}
+  img.inverted{
+    filter: invert(1);
+  }
 `;

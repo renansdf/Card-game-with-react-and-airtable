@@ -1,42 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Container, CSVContainer } from './styles';
+import React from 'react';
 
+import Explanation from '../../components/Explanation';
+import Upload from '../../components/Upload';
 import Interface from '../../components/Interface';
 
-import { CSVReader } from 'react-papaparse';
+import { Container, SocialIcons } from './styles';
 
-interface IParsedLine {
-  data: string[];
-}
+import rfLogo from '../../images/logo-rf.png';
+import github from '../../images/github.png';
+import linkedin from '../../images/linkedin.png';
 
 const Board: React.FC = () => {
-  const [parsedFile, setParsedFile] = useState<IParsedLine[]>();
-  const [hasFile, setHasFile] = useState<boolean>(false);
-
-  function getDecks(payload: IParsedLine[]) {
-    setParsedFile(payload);
-    setHasFile(true);
-  }
-
-  useEffect(() => {
-
-  }, []);
-
   return (
     <Container>
-      <CSVContainer isVisible={!!hasFile}>
-        <section>
-          <h1>Deck Player</h1>
-          <p>drop your .csv file below to manage each column of the sheet as a deck of cards.</p>
-          <p>you can play a card on the table by clicking on a deck.</p>
-          <p>each new card is picked at random and cannot be repeated.</p>
-          <p>each new card is picked at random and cannot be repeated.</p>
-
-          <label>click or drag file here</label>
-          <CSVReader onFileLoad={getDecks} />
-        </section>
-      </CSVContainer>
-      <Interface parsedCSV={parsedFile} />
+      <Explanation />
+      <Upload />
+      <SocialIcons>
+        <a href="https://blog.defreitas.xyz/" target="_blank" rel="noopener noreferrer" ><img className="inverted" src={rfLogo} alt="Renan de Freitas Logo" /></a>
+        <a href="https://github.com/renansdf/" target="_blank" rel="noopener noreferrer" ><img className="inverted" src={github} alt="Renan de Freitas Logo" /></a>
+        <a href="https://www.linkedin.com/in/renan-freitas-60138b2a/" target="_blank" rel="noopener noreferrer" ><img className="inverted" src={linkedin} alt="Renan de Freitas Logo" /></a>
+      </SocialIcons>
+      <Interface />
     </Container>
   );
 }
