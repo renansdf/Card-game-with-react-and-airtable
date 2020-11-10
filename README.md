@@ -1,6 +1,6 @@
-## Vértice | Game Oficina de Facilitação
+## Introdução | Vértice - Game Oficina de Facilitação
 
-Esta aplicação foi desenvolvida inicialmente para apoiar o processo educativo da oficina de facilitação da Vértice de Setembro 2020.
+Esta aplicação foi desenvolvida inicialmente para apoiar o processo educativo da oficina de facilitação da Vértice de Setembro 2020. A oficina porém ganhou outro formato e passou a utilizar [o seguinte repositório](https://github.com/renansdf/jogo-oficina-de-facilitacao).
 
 ### Resumo
 Jogo de perguntas e respostas para ser usado no processo de instruir os jogadores sobre metodologias de facilitação de processos.
