@@ -11,7 +11,7 @@ const Explanation: React.FC = () => {
   return (
     <Container isVisible={isMenuVisible}>
       <div>
-        <h1>Deck Player</h1>
+        <h1>csv to card game</h1>
         <p>Drop your .csv file in the box to turn each column of the sheet into a deck of cards.</p>
         <p>You can play a card on the table by clicking on a deck.</p>
         <p>Each new card is picked at random and cannot be repeated.</p>
