@@ -1,40 +1,17 @@
-## Vértice | Game Oficina de Facilitação
+## Introdução | Vértice - Game Oficina de Facilitação
 
-Esta aplicação foi desenvolvida inicialmente para apoiar o processo educativo da oficina de facilitação da Vértice de Setembro 2020.
+Esta aplicação foi desenvolvida inicialmente para apoiar o processo educativo da oficina de facilitação da Vértice de Setembro 2020. A oficina porém ganhou outro formato e passou a utilizar [o seguinte repositório](https://github.com/renansdf/jogo-oficina-de-facilitacao). A principio esta aplicação seria um jogo de cartas com diferentes funções: em cada carta haveriam perguntas, ações ou narrativas que seriam ativadas ao longo do jogo. Por isso foi necessário criar nomes para os decks, sorteio de cartas e a possibilidade de jogar um carta novamente.
 
-### Resumo
-Jogo de perguntas e respostas para ser usado no processo de instruir os jogadores sobre metodologias de facilitação de processos.
+### Atual estado desta aplicação
+Durante o desenvolvimento foi necessário criar uma interface de jogo onde os decks de cartas pudessem ser carregados por uma planilha. Esta premissa foi mantida e adaptada para receber uploads de .csv e criar os decks de carta a partir das colunas da planilha, onde a primeira linha de uma coluna seria o título do deck e as demais linhas seriam suas cartas. 
+
+- Inicialmente as cartas eram inseridas em uma planilha do AirTable e carregadas na aplicação via uma API.
+- Na primeira versão todo o gerenciamento dos decks era feito em um único componente, mas agora esse gerenciamento é feito usando um hook de contexto do React.
 
 ### Requisitos não funcionais
-- Front end em React
-- Cartas são alimentadas por planilhas
-- Apenas um jogador mexe no tabuleiro e deve compartilhar sua tela
-
-### Regras
-**Regras de jogadores**
-- Quanto tempo um jogador tem para responder uma pergunta?
-- Como um jogador é selecionado para responder a pergunta?
-- Como os jogadores podem pedir ajuda aos demais jogadores ao responder uma pergunta?
-
-**Regras de facilitação**
-- Qual deve ser o critério para o facilitador selecionar a próxima carta no início de uma rodada?
+- Cartas são alimentadas por planilhas.
+- Durante uma sessão de jogo apenas um jogador mexe no tabuleiro e deve compartilhar sua tela com os demais.
 
 ### Requisitos funcionais
-**Montagem**
-- Uma pessoa (o convidado) deve assumir o papel do “cliente”. Seu objetivo é julgar as respostas dos jogadores e atribuir uma nota à cada uma: bom, médio ou ruim
-- Uma pessoa deve assumir o papel do facilitador. Apenas este papel interage com a interface do jogo. Este deve compartilhar sua tela para que todos possam visualizar o andamento
-- Um grupo de pessoas deve assumir o papel de jogadores, e sua responsabilidade durante a experiência é responder as perguntas a fim de satisfazer o cliente
-- Facilitador deve poder criar uma sessão de jogo alimentando a matriz com uma planilha organizada em perguntas, destinos e histórias
-- O Tempo de duração da sessão deve ser previamente estabelecido
-
-**Rodada**
-- Facilitador deve poder selecionar a próxima carta de um dentre os três decks de perguntas, destinos e histórias. Para fazer a seleção, ele deve seguir as regras de facilitação
-- A carta deve ser revelada e deve expor três gradações: boa resposta, resposta neutra e resposta ruim
-- O jogador designado pelo grupo deve responder a pergunta de acordo com as regras de jogadores
-- O cliente deve julgar a resposta e atribuir-lhe uma nota. O facilitador deve selecionar a nota que o cliente deu
-- A carta com a pergunta visível e a nota atribuída devem permanecer visíveis na interface
-- Inicia-se outra rodada
-
-**Condição de vitória**
-- O jogo deve terminar quando o limite de tempo do grupo acabar
-- O jogo deve terminar quando o cliente estiver satisfeito e determinar o fim da experiência
+- Ao acessar a aplicação e a qualquer momento durante a interação o usuário deve poder atualizar a planilha de .csv e portanto os decks de cartas.
+- Cartas que já foram usadas devem poder ser jogadas novamente e ter seu valor (⭐) alterado.
