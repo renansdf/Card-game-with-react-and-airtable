@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+interface IDeckProps {
+  isEmpty: boolean;
+}
 
 export const Container = styled.div`
   display: flex;
@@ -17,8 +21,7 @@ export const DecksContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-export const Deck = styled.div`
-  font-family: 'Merienda One', cursive;
+export const Deck = styled.div<IDeckProps>`
   width: 200px;
   height: 30vh;
   transform: translateY(30%);
@@ -28,7 +31,8 @@ export const Deck = styled.div`
 
   h2{
     margin-bottom: 15px;
-    font-size: 30px;
+    font-size: 25px;
+    text-align: center;
   }
   button{
     background: none;
@@ -42,6 +46,17 @@ export const Deck = styled.div`
       }
     }
   }
+
+  p{
+    text-align: center;
+    max-width: 130px;
+  }
+
+  ${props => props.isEmpty && css`
+    img{
+      display: none;
+    }
+  `}
 `;
 
 export const Questions = styled.div`
@@ -137,7 +152,7 @@ export const UsedCards = styled.div`
     cursor: pointer;
     flex-shrink: 0;
 
-    span{
+    aside{
       display: block;
       position: absolute;
       bottom: 10px;

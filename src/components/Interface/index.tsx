@@ -1,62 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Container, DecksContainer, Deck, Questions, UsedCards } from './styles';
 import cardImg from '../../images/carta-bg.png';
-
-interface IParsedLine {
-  data: string[];
-}
-
-interface InterfaceProps {
-  parsedCSV?: IParsedLine[];
-}
-
-interface IDeckData {
-  name: string;
-  cards: Array<string>;
-}
+import { useDecks } from '../../hooks/Deck';
 
 interface ICard {
   question: string;
   valuation: 'bom' | 'regular' | 'ruim';
 }
 
-interface IRecordObject {
-  fields: {
-    [key: string]: string;
-  }
-}
-
-interface IParsedLine {
-  data: string[];
-}
-
-const Interface: React.FC<InterfaceProps> = ({ parsedCSV }) => {
-  const [decks, setDecks] = useState<IDeckData[]>([]);
+const Interface: React.FC = () => {
   const [card, setCard] = useState<ICard>({ question: '', valuation: 'regular' });
   const [usedCards, setUsedCards] = useState<ICard[]>([]);
 
-  const getDecks = useCallback((parsedLines: IParsedLine[]) => {
-    if (parsedLines) {
-      const updatedDecks: IDeckData[] = [];
-
-      const columnNames = parsedLines.shift();
-
-      columnNames?.data.forEach(column => {
-        updatedDecks.push({ name: column, cards: [] });
-      });
-
-      parsedLines.forEach((line, lineIndex) => {
-        line.data.forEach((data, dataIndex) => {
-          data && updatedDecks[dataIndex].cards.push(data);
-        });
-      });
-
-      setDecks(updatedDecks);
-    }
-  }, []);
+  const { decks, setDecks } = useDecks();
 
   const handleCardChoice = useCallback((deckName) => {
-    if (card && card.question === '') {
+    if (card && decks && card.question === '') {
       const chosenDeck = decks.filter(deck => deck.name === deckName);
       const cards = chosenDeck[0].cards;
       if (cards.length > 0) {
@@ -69,6 +28,10 @@ const Interface: React.FC<InterfaceProps> = ({ parsedCSV }) => {
         updatedDecks.forEach(deck => {
           if (deck.name === chosenDeck[0].name) {
             deck.cards.splice(selectedCardKey, 1);
+            console.log(deck.cards.length);
+            if (deck.cards.length === 0) {
+              deck.isEmpty = true;
+            }
           }
         });
 
@@ -93,10 +56,6 @@ const Interface: React.FC<InterfaceProps> = ({ parsedCSV }) => {
     }
   }, [setCard, setUsedCards, card, usedCards]);
 
-  useEffect(() => {
-    parsedCSV && getDecks(parsedCSV);
-  }, [parsedCSV, getDecks]);
-
   return (
     <Container>
       <UsedCards>
@@ -106,7 +65,11 @@ const Interface: React.FC<InterfaceProps> = ({ parsedCSV }) => {
             onClick={() => handleReuseCard(card.question, card.valuation, usedCards.findIndex((usedCard) => usedCard.question === card.question))}
           >
             {card.question}
-            <span>{card.valuation}</span>
+            <aside>
+              {card.valuation === "ruim" && (<span role="img" aria-label="three stars">⭐</span>)}
+              {card.valuation === "regular" && (<span role="img" aria-label="three stars">⭐⭐</span>)}
+              {card.valuation === "bom" && (<span role="img" aria-label="three stars">⭐⭐⭐</span>)}
+            </aside>
           </div>
         ))}
       </UsedCards>
@@ -116,16 +79,17 @@ const Interface: React.FC<InterfaceProps> = ({ parsedCSV }) => {
           {card?.question}
         </p>
         <div>
-          <button onClick={() => handleCardAnswer('bom')}>resposta boa</button>
-          <button onClick={() => handleCardAnswer('regular')}>resposta regular</button>
-          <button onClick={() => handleCardAnswer('ruim')}>resposta ruim</button>
+          <button onClick={() => handleCardAnswer('ruim')}><span role="img" aria-label="one star">⭐</span></button>
+          <button onClick={() => handleCardAnswer('regular')}><span role="img" aria-label="two stars">⭐⭐</span></button>
+          <button onClick={() => handleCardAnswer('bom')}><span role="img" aria-label="three stars">⭐⭐⭐</span></button>
         </div>
       </Questions>
 
       <DecksContainer>
         {decks && decks.map(deck => (
-          <Deck key={deck.name}>
+          <Deck key={deck.name} isEmpty={deck.isEmpty}>
             <h2>{deck.name}</h2>
+            {deck.isEmpty && (<p>this deck is out of cards</p>)}
             <button onClick={() => handleCardChoice(deck.name)}><img src={cardImg} alt="Card" /></button>
           </Deck>
         ))}
